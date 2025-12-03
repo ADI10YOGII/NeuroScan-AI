@@ -1,0 +1,50 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+brain_tumor_env/
+
+# Node.js
+node_modules/
+dist/
+.env
+.DS_Store
+coverage/
+.nyc_output/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Project specific
+backend/models/cnn-parameters-improvement-23-0.91.model
+# Note: We usually don't commit large models to git unless using LFS. 
+# For this specific request, I will assume the user might want it or I should exclude it if it's too large.
+# Given it's a specific model file, I'll exclude it to prevent large file errors, 
+# but mention in README where to put it.
