@@ -41,6 +41,16 @@ def test_backend():
             else:
                 print("❌ Histogram data MISSING")
                 
+            if 'heatmap_image' in result and result['heatmap_image']:
+                print("✅ Grad-CAM Heatmap returned")
+            else:
+                print("❌ Grad-CAM Heatmap MISSING")
+                
+            if 'metrics' in result:
+                print(f"✅ Metrics returned: {result['metrics']}")
+            else:
+                print("❌ Metrics MISSING")
+                
         else:
             print(f"❌ Prediction Failed: {response.status_code}")
             print(response.text)

@@ -80,9 +80,16 @@ async def predict(file: UploadFile = File(...)):
         message = "High confidence detection" if confidence > 0.8 else "Low confidence detection"
         
         # Calculate extra data
-        from image_processor import calculate_histogram, encode_image_to_base64
+        from image_processor import calculate_histogram, encode_image_to_base64, calculate_metrics
+        from grad_cam import generate_gradcam_image
+        
         histogram = calculate_histogram(normalized_image)
         processed_image_b64 = encode_image_to_base64(normalized_image)
+        metrics = calculate_metrics(normalized_image)
+        
+        # Generate Grad-CAM only if tumor is detected (or always, user preference)
+        # Let's generate it always for "Explainable AI" even for negative cases (showing what it looked at)
+        heatmap_image = generate_gradcam_image(model, final_image)
         
         return PredictionResponse(
             filename=file.filename,
@@ -91,7 +98,9 @@ async def predict(file: UploadFile = File(...)):
             has_tumor=has_tumor,
             message=message,
             processed_image=processed_image_b64,
-            histogram=histogram
+            histogram=histogram,
+            heatmap_image=heatmap_image,
+            metrics=metrics
         )
         
     except Exception as e:

@@ -14,7 +14,13 @@ export interface PredictionResult {
     has_tumor: boolean;
     message: string;
     processed_image?: string;
+    heatmap_image?: string;
     histogram?: { name: string; data: number[] }[];
+    metrics?: {
+        entropy: number;
+        contrast: number;
+        snr: number;
+    };
 }
 
 export const predictImage = async (file: File): Promise<PredictionResult> => {

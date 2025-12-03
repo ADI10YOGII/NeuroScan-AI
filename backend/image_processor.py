@@ -104,3 +104,30 @@ def encode_image_to_base64(image):
     image_bgr = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
     _, buffer = cv2.imencode('.png', image_bgr)
     return base64.b64encode(buffer).decode('utf-8')
+
+def calculate_metrics(image):
+    """
+    Calculate advanced image metrics: Entropy, Contrast, SNR
+    """
+    # Convert to grayscale for metrics
+    gray = cv2.cvtColor((image * 255).astype(np.uint8), cv2.COLOR_RGB2GRAY)
+    
+    # 1. Entropy (Texture/Complexity)
+    hist = cv2.calcHist([gray], [0], None, [256], [0, 256])
+    hist = hist.ravel() / hist.sum()
+    logs = np.log2(hist + 1e-7)
+    entropy = -np.sum(hist * logs)
+    
+    # 2. Contrast (Standard Deviation of pixel intensities)
+    contrast = gray.std()
+    
+    # 3. SNR (Signal-to-Noise Ratio)
+    # Simple approximation: Mean / StdDev
+    mean = gray.mean()
+    snr = mean / (contrast + 1e-7)
+    
+    return {
+        "entropy": float(entropy),
+        "contrast": float(contrast),
+        "snr": float(snr)
+    }
